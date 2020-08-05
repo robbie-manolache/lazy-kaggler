@@ -1,0 +1,1 @@
+from lazykaggler.competitions import competition_list
