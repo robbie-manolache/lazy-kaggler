@@ -1,1 +1,1 @@
-from lazykaggler.competitions import competition_list
+from lazykaggler.competitions import competition_list, competition_files
