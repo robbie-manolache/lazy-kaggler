@@ -64,7 +64,7 @@ def competition_download(competition, file_name = None, local_path = None,
     # check that file has not been downloaded
     full_path = os.path.join(local_path, file_name_parts[-1])
     if os.path.exists(full_path) and not re_download:
-        print("File already downloaded")
+        print("%s already downloaded"%file_name)
         return
     else:
         pass
