@@ -30,6 +30,12 @@ def competition_list(group = "general", category = "all",
 
 def competition_files(competiton):
     """
+    Issues
+    - Not all files shown at once
+    - there appears to be a limit of 500 for "smaller files"
+      - e.g. the image data for OSIC PFP
+    - may have to compile iteratively
+    - unclear whether the 500 file names are extracted at random
     """
 
     # set up command
@@ -41,7 +47,8 @@ def competition_files(competiton):
 
     return df
 
-def competition_download(competition, file_name = None, local_path = None):
+def competition_download(competition, file_name = None, local_path = None,
+                         re_download = False):
     """
     """
 
@@ -54,6 +61,14 @@ def competition_download(competition, file_name = None, local_path = None):
         if not os.path.isdir(local_path):
             os.makedirs(local_path) 
 
+    # check that file has not been downloaded
+    full_path = os.path.join(local_path, file_name_parts[-1])
+    if os.path.exists(full_path) and not re_download:
+        print("File already downloaded")
+        return
+    else:
+        pass
+
     # set up command
     cmd = " ".join(["kaggle competitions download", competition])
     if file_name is not None:
@@ -65,10 +80,12 @@ def competition_download(competition, file_name = None, local_path = None):
     subprocess.run(cmd)
 
     # Check if file is zipped
-    full_path = os.path.join(local_path, file_name_parts[-1])
     if os.path.exists(full_path+".zip"):
         with ZipFile(full_path+".zip") as zf:
             zf.extractall(local_path)
         os.remove(full_path+".zip")
 
-    return(os.path.exists(full_path))
+    if os.path.exists(full_path):
+        print("%s downloaded successfully"%file_name)
+    else:
+        print("%s could not be downloaded"%file_name)
