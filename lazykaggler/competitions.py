@@ -72,7 +72,7 @@ def competition_download(competition, file_name = None, local_path = None,
     # set up command
     cmd = " ".join(["kaggle competitions download", competition])
     if file_name is not None:
-        cmd = cmd + " -f %s"%file_name
+        cmd = cmd + " -f \"%s\""%file_name
     if local_path is not None:
         cmd = cmd + " -p \"%s\""%local_path
     
