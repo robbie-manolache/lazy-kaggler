@@ -53,21 +53,26 @@ def competition_download(competition, file_name = None, local_path = None,
     """
 
     # split file_name in case it is a directory path
-    file_name_parts = file_name.split("/")
+    if file_name is None:
+        file_name_parts = ""
+    else:
+        file_name_parts = file_name.split("/")
 
     # extend local path to mirror setup on Kaggle
     if len(file_name_parts) > 1:
         local_path = os.path.join(local_path, *file_name_parts[:-1])
         if not os.path.isdir(local_path):
-            os.makedirs(local_path) 
+            os.makedirs(local_path)
 
-    # check that file has not been downloaded
-    full_path = os.path.join(local_path, file_name_parts[-1])
-    if os.path.exists(full_path) and not re_download:
-        print("%s already downloaded"%file_name)
-        return
+        # check that file has not been downloaded
+        full_path = os.path.join(local_path, file_name_parts[-1])
+        if os.path.exists(full_path) and not re_download:
+            print("%s already downloaded"%file_name)
+            return
+        else:
+            pass
     else:
-        pass
+        full_path = os.path.join(local_path, competition)
 
     # set up command
     cmd = " ".join(["kaggle competitions download", competition])
@@ -84,8 +89,9 @@ def competition_download(competition, file_name = None, local_path = None,
         with ZipFile(full_path+".zip") as zf:
             zf.extractall(local_path)
         os.remove(full_path+".zip")
-
-    if os.path.exists(full_path):
-        print("%s downloaded successfully"%file_name)
+        print("Successfully unzipped contents of %s"%(full_path+".zip"))
     else:
-        print("%s could not be downloaded"%file_name)
+        if os.path.exists(full_path):
+            print("%s downloaded successfully"%file_name)
+        else:
+            print("%s could not be downloaded"%file_name)
