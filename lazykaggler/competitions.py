@@ -4,22 +4,24 @@ import pandas as pd
 from io import StringIO
 from zipfile import ZipFile
 
-def competition_list(group = "general", category = "all", 
-                     sort_by = "latestDeadline", search_for = None):
+def competition_list(group = None, category = None, 
+                     sort_by = None, search_for = None):
     """
     """
 
     # Argument checks - must be one of the valid options from Kaggle API
     # TBC
 
+    # arg dict
+    arg_dict = {
+        "group": group, "category": category, "sort_by": sort_by, "search_for": search_for
+    }
+    
     # set up command
     cmd = "kaggle competitions list"
-    cmd = " ".join([cmd, "--group", group, "--category", category, 
-                    "--sort-by", sort_by])
-    if search_for is not None:
-        cmd = " ".join([cmd, "search", search_for])
-    else:
-        pass
+    for k, v in arg_dict.items():
+        if v is not None:
+            cmd = cmd + " --" + k + " " + v
     cmd = cmd + " -v --csv"
 
     # run command and get output
