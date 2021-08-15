@@ -1,3 +1,4 @@
+
 import os
 import subprocess
 from numpy import setdiff1d
@@ -28,3 +29,4 @@ def kernel_output_download(user, kernel_name, local_path = None):
         print("No new files added. " +
               "Either existing files were updated " +
               "or kernel does not have any output/exist.")
+        
